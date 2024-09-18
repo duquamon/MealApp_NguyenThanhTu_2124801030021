@@ -1,6 +1,6 @@
+// app/(tabs)/_layout.tsx
 import { Tabs } from 'expo-router';
 import React from 'react';
-
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -13,22 +13,35 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-      }}>
+      }}
+    >
+      {/* Tab "Menu" */}
       <Tabs.Screen
-        name="index"
+        name="MenuScreen"  // Đảm bảo tên này trùng khớp với định nghĩa màn hình
         options={{
-          title: 'Home',
+          title: 'Menu',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
           ),
         }}
       />
+      {/* Tab "Favorites" */}
       <Tabs.Screen
-        name="explore"
+        name="FavoritesScreen"
         options={{
-          title: 'Explore',
+          title: 'Favorites',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabBarIcon name={focused ? 'heart' : 'heart-outline'} color={color} />
+          ),
+        }}
+      />
+      {/* Tab "Settings" */}
+      <Tabs.Screen
+        name="SettingsScreen"
+        options={{
+          title: 'Settings',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'settings' : 'settings-outline'} color={color} />
           ),
         }}
       />

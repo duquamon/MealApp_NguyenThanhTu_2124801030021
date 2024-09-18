@@ -1,29 +1,26 @@
-// app/MenuScreen.tsx
+// app/MealsOverviewScreen.tsx
 import React from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { useRoute, RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '@/constants/types';
 
-type MenuScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Menu'>;
+type MealsOverviewRouteProp = RouteProp<RootStackParamList, 'MealsOverview'>;
 
-const CATEGORIES = [
-  { id: '1', title: 'Italian', image: { uri: 'https://reactjs.org/logo-og.png' } },
-  // ... các mục khác
+const MEALS = [
+  { id: '1', title: 'Spaghetti', image: { uri: 'https://example.com/spaghetti.png' }, categoryId: '1' },
+  { id: '2', title: 'Pizza', image: { uri: 'https://example.com/pizza.png' }, categoryId: '1' },
+  // ... các món ăn khác
 ];
 
-const MenuScreen = () => {
-  const navigation = useNavigation<MenuScreenNavigationProp>();
+const MealsOverviewScreen = () => {
+  const route = useRoute<MealsOverviewRouteProp>();
+  const { categoryId } = route.params;
 
-  const renderCategoryItem = ({ item }: { item: { id: string, title: string, image: { uri: string } } }) => (
-    <TouchableOpacity
-      style={styles.gridItem}
-      onPress={() => {
-        navigation.navigate('MealsOverview', {
-          categoryId: item.id,
-        });
-      }}
-    >
+  // Lọc các món ăn theo categoryId
+  const displayedMeals = MEALS.filter(meal => meal.categoryId === categoryId);
+
+  const renderMealItem = ({ item }: { item: { id: string, title: string, image: { uri: string } } }) => (
+    <TouchableOpacity style={styles.gridItem}>
       <View style={styles.itemContainer}>
         <Image source={item.image} style={styles.image} />
         <Text style={styles.title}>{item.title}</Text>
@@ -34,8 +31,8 @@ const MenuScreen = () => {
   return (
     <View style={styles.screen}>
       <FlatList
-        data={CATEGORIES}
-        renderItem={renderCategoryItem}
+        data={displayedMeals}
+        renderItem={renderMealItem}
         keyExtractor={(item) => item.id}
         numColumns={2}
       />
@@ -79,4 +76,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MenuScreen;
+export default MealsOverviewScreen;
